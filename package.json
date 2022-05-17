@@ -11,7 +11,9 @@
     "serverstart": "nodemon ./bin/www"
   },
   "dependencies": {
-    "express": "~4.16.1"
+    "dotenv": "^16.0.1",
+    "express": "~4.16.1",
+    "mongoose": "^6.3.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
