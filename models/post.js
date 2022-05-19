@@ -3,20 +3,17 @@ const Schema = mongoose.Schema;
 
 const PostSchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      maxLength: 100,
-    },
-    body: {
+    text: {
       type: String,
       required: true,
     },
+    /*
     author: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
+    */
     created_at: {
       type: Date,
       immutable: true,
@@ -33,7 +30,7 @@ const PostSchema = new Schema(
 );
 
 PostSchema.virtual('url').get(function() {
-  return '/post/' + this.formatted_title;
+  return '/post/' + this._id;
 });
 
 export default mongoose.model('Post', PostSchema);
