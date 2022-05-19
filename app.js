@@ -2,8 +2,10 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import passport from 'passport';
 
 import initializeMongo from './config/mongoConfig.js';
+import initializePassport from './config/passportConfig.js';
 import upload from './config/multerConfig.js';
 import { postRouterV1 } from './routes/v1.js';
 
@@ -16,6 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // mongodb/mongoose connection set up
 initializeMongo(mongoose);
+
+// passport setup
+initializePassport(passport);
+app.use(passport.initialize());
 
 // define routes
 app.use('/api/v1/post', upload.none(), postRouterV1);
