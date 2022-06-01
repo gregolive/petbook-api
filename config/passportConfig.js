@@ -9,13 +9,13 @@ const initialize = (passport) => {
       User.findOne({ username}, (err, user) => {
         if (err) { return done(err); }
         if (!user) {
-          return done(null, false, { message: 'Username not found' });
+          return done(null, false, { username: 'Username not found' });
         }
         bcrypt.compare(password, user.password, (err, res) => {
           if (res) {
             return done(null, user); // passwords match, log user in
           } else {
-            return done(null, false, { message: 'Incorrect password' }); // passwords do not match
+            return done(null, false, { password: 'Incorrect password' }); // passwords do not match
           }
         });
       });

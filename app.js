@@ -6,8 +6,7 @@ import passport from 'passport';
 
 import initializeMongo from './config/mongoConfig.js';
 import initializePassport from './config/passportConfig.js';
-import upload from './config/multerConfig.js';
-import { postRouterV1 } from './routes/v1.js';
+import { authRouterV1, userRouterV1, postRouterV1 } from './routes/v1.js';
 
 const app = express();
 
@@ -24,6 +23,8 @@ initializePassport(passport);
 app.use(passport.initialize());
 
 // define routes
-app.use('/api/v1/post', upload.none(), postRouterV1);
+app.use('/api/v1/auth', authRouterV1);
+app.use('/api/v1/user', userRouterV1);
+app.use('/api/v1/post', postRouterV1);
 
 export default app;
