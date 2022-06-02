@@ -1,12 +1,12 @@
 import { body, validationResult } from 'express-validator';
 import Post from '../../models/post.js';
 
-export const detail = async (req, res) => {
-  const post = await Post.findById(req.params.id).populate('author', 'username first_name last_name')
+export const index = async (req, res) => {
+  const user = res.locals.user;
+  const posts = await Post.findOne({author: user._id}).populate('author', 'username first_name last_name')
     .catch((err) => { return res.status(400).json({ err }); });
-  const comments = await Comment.find({ 'post': req.params.id }).sort({ created_at: -1 }).lean().populate('author', 'username');
-  
-  res.status(200).json({ post, comments });
+
+  return res.status(200).json({ user, posts });
 };
 
 export const create = [
