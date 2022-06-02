@@ -11,7 +11,7 @@ export const login = async (req, res) => {
     }
     req.login(user, { session: false }, (err) => {
       if (err) { res.status(400).json({ err }); }
-      const token = jwt.sign({ user }, process.env.TOKEN_ACCESS_SECRET);
+      const token = jwt.sign({ userId: user._id }, process.env.TOKEN_ACCESS_SECRET);
       return res.json({ token });
     });
   })(req, res);
@@ -52,7 +52,7 @@ export const register = [
 
         user.save((error) => {
           if (error) { return next(error); }
-          const token = jwt.sign({ user }, process.env.TOKEN_ACCESS_SECRET);
+          const token = jwt.sign({ userId: user._id }, process.env.TOKEN_ACCESS_SECRET);
           res.status(200).json({ token });
         });
       });

@@ -23,7 +23,7 @@ export const create = [
     } else {
       const post = new Post({ 
         text: req.body.text,
-        //author: req.body.author,
+        author: res.locals.user._id,
       });
 
       post.save((err) => {

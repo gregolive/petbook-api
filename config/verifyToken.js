@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
 const verifyToken = (req, res, next) => {
   if (req.headers && req.headers.authorization) {
@@ -9,8 +10,11 @@ const verifyToken = (req, res, next) => {
     } catch (err) {
       return res.status(401);
     }
-    res.locals.user = tokenData.user;
-    next();
+  
+    User.findOne({_id: tokenData.userId}).select('_id username name email url').then((user) => {
+      res.locals.user = user;
+      next();
+    });
   }
 
   return res.status(500);
