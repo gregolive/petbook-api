@@ -19,12 +19,6 @@ export const login = (req, res) => {
 
 export const register = [
   // Validate and sanitize
-  body('username').trim().isLength({ min: 5 }).escape().withMessage('Entered username must be at least 5 characters long')
-    .matches('[a-zA-Z0-9-_]+$').withMessage('Username can only contain letters, numbers, dashes, and underscores').custom(async (username) => {
-      return User.findOne({ username }).then((user) => {
-        if (user) { return Promise.reject('Username already in use'); }
-      });
-    }),
   body('name').trim().isLength({ min: 1 }).escape().withMessage('Please enter a name')
     .matches('[a-zA-Z ]+$').withMessage('Name can only contain letters and spaces'),
   body('email').trim().escape().isEmail().withMessage('Please enter a valid email').custom(async (email) => {
@@ -44,7 +38,6 @@ export const register = [
       bcrypt.hash(req.body.password, 16, (err, hashedPassword) => {
         if (err) { return next(err); }
         const user = new User({
-          username: req.body.username,
           name: req.body.name,
           email: req.body.email,
           password: hashedPassword,

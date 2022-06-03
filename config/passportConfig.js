@@ -15,11 +15,13 @@ const initialize = (passport) => {
   });
 
   passport.use(
-    new LocalStrategy.Strategy((username, password, done) => {
-      User.findOne({ username }, (err, user) => {
+    new LocalStrategy.Strategy({
+      usernameField: 'email',
+    }, (email, password, done) => {
+      User.findOne({ email }, (err, user) => {
         if (err) { return done(err); }
         if (!user) {
-          return done(null, false, { username: 'Username not found' });
+          return done(null, false, { email: 'Email not found' });
         }
         bcrypt.compare(password, user.password, (err, res) => {
           if (res) {
