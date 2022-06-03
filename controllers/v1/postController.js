@@ -3,7 +3,7 @@ import Post from '../../models/post.js';
 
 export const index = async (req, res) => {
   const user = res.locals.user;
-  const posts = await Post.findOne({author: user._id}).populate('author', 'username first_name last_name')
+  const posts = await Post.find({author: user._id}).populate('author', 'username name url')
     .catch((err) => { return res.status(400).json({ err }); });
 
   return res.status(200).json({ user, posts });

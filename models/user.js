@@ -3,13 +3,6 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: true,
-      minLength: 5,
-      maxLength: 40,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -20,9 +13,20 @@ const UserSchema = new Schema(
       required: true,
       unique: true,
     },
+    email_verified: {
+      type: Boolean,
+      default: false,
+    },
+    provider: {
+      type: String,
+      default:'email',
+    },
+    provider_id:{
+      type: String,
+      default: null,
+    },
     password: {
       type: String,
-      required: true,
       minLength: 6,
     },
     created_at: {
@@ -41,7 +45,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.virtual('url').get(function() {
-  return '/user/' + this.username;
+  return '/user/' + this._id;
 });
 
 export default mongoose.model('User', UserSchema);

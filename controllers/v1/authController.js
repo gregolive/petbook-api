@@ -4,13 +4,13 @@ import bcrypt from 'bcrypt';
 import { body, validationResult } from 'express-validator';
 import User from '../../models/user.js';
 
-export const login = async (req, res) => {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
+export const login = (req, res) => {
+  passport.authenticate('local', { session: false }, (err, user, msg) => {
     if (err || !user) {
-      return res.status(400).json({ message: info, user });
+      return res.status(400).json({ msg, user });
     }
-    req.login(user, { session: false }, (err) => {
-      if (err) { res.status(400).json({ err }); }
+    req.login(user, { session: false }, (error) => {
+      if (error) { res.status(400).json({ error }); }
       const token = jwt.sign({ userId: user._id }, process.env.TOKEN_ACCESS_SECRET);
       return res.json({ token });
     });
@@ -57,5 +57,30 @@ export const register = [
         });
       });
     }
+  }
+];
+
+export const facebookLogin = passport.authenticate('facebook', { scope: ['email'] });
+
+export const facebookCallback = [
+  passport.authenticate('facebook', { failureRedirect: 'http://localhost:3000/welcome' }),
+  (req, res) => {
+    const token = jwt.sign({ userId: req.user._id }, process.env.TOKEN_ACCESS_SECRET);
+    res.cookie('jwt', token);
+    res.redirect('http://localhost:3000');
+  }
+];
+
+export const googleLogin = passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  prompt: 'select_account',
+});
+
+export const googleCallback = [
+  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/welcome' }),
+  (req, res) => {
+    const token = jwt.sign({ userId: req.user._id }, process.env.TOKEN_ACCESS_SECRET);
+    res.cookie('jwt', token);
+    res.redirect('http://localhost:3000');
   }
 ];

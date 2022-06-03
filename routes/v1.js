@@ -12,6 +12,10 @@ const postRouterV1 = express.Router();
 // Authentication routes
 authRouterV1.post('/login', upload.none(), authController.login);
 authRouterV1.post('/register', upload.none(), authController.register);
+authRouterV1.get('/facebook', authController.facebookLogin);
+authRouterV1.get('/facebook/callback', authController.facebookCallback);
+authRouterV1.get('/google', authController.googleLogin);
+authRouterV1.get('/google/callback', authController.googleCallback);
 
 // User routes
 userRouterV1.get('/:id', verifyToken, userController.detail);
