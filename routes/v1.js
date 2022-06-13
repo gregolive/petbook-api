@@ -21,7 +21,7 @@ authRouterV1.get('/google/callback', authController.googleCallback);
 userRouterV1.get('/:id', verifyToken, userController.detail);
 
 // Post routes
-postRouterV1.post('/create', verifyToken, upload.none(), postController.create);
+postRouterV1.post('/create', verifyToken, upload.single('image'), postController.create);
 postRouterV1.get('/index', verifyToken, postController.index);
 
 export { authRouterV1, userRouterV1, postRouterV1 };
