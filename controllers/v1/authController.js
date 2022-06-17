@@ -56,11 +56,11 @@ export const register = [
 export const facebookLogin = passport.authenticate('facebook', { scope: ['email'] });
 
 export const facebookCallback = [
-  passport.authenticate('facebook', { failureRedirect: 'http://localhost:3000/welcome' }),
+  passport.authenticate('facebook', { failureRedirect: `${process.env.CLIENT_URL}/welcome` }),
   (req, res) => {
     const token = jwt.sign({ userId: req.user._id }, process.env.TOKEN_ACCESS_SECRET);
     res.cookie('jwt', token);
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.CLIENT_URL);
   }
 ];
 
@@ -70,10 +70,10 @@ export const googleLogin = passport.authenticate('google', {
 });
 
 export const googleCallback = [
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/welcome' }),
+  passport.authenticate('google', { failureRedirect: `${process.env.CLIENT_URL}/welcome` }),
   (req, res) => {
     const token = jwt.sign({ userId: req.user._id }, process.env.TOKEN_ACCESS_SECRET);
     res.cookie('jwt', token);
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.CLIENT_URL);
   }
 ];

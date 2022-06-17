@@ -23,5 +23,6 @@ userRouterV1.get('/:id', verifyToken, userController.detail);
 // Post routes
 postRouterV1.post('/create', verifyToken, upload.single('image'), postController.create);
 postRouterV1.get('/index', verifyToken, postController.index);
+postRouterV1.get('/index/:page', verifyToken, postController.index_page);
 
 export { authRouterV1, userRouterV1, postRouterV1 };

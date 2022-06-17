@@ -19,15 +19,6 @@ const uploadFile = (file) => {
   return bucket.upload(uploadParams).promise();
 };
 
-const downloadFile = (fileKey) => {
-  const downloadParams = {
-    Key: fileKey,
-    Bucket: process.env.AWS_BUCKET_NAME,
-  };
-
-  return bucket.getObject(downloadParams).createReadStream();
-};
-
 const deleteFile = (fileKey) => {
   const deleteParams = {
     Key: fileKey,
@@ -37,4 +28,4 @@ const deleteFile = (fileKey) => {
   return s3.deleteObject(deleteParams).promise();
 };
 
-export { uploadFile, downloadFile, deleteFile };
+export { uploadFile, deleteFile };

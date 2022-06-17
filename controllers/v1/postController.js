@@ -1,13 +1,22 @@
 import { body, validationResult } from 'express-validator';
-import { uploadFile, downloadFile } from '../../config/s3Config.js';
+import { uploadFile } from '../../config/s3Config.js';
 import Post from '../../models/post.js';
 
 export const index = async (req, res) => {
   const user = res.locals.user;
-  const posts = await Post.find({author: user._id}).sort({ created_at: -1 }).populate('author', 'username name url')
-    .catch((err) => { return res.status(400).json({ err }); });
+  const posts = await Post.find({ author: user._id }).limit(5).sort({ created_at: -1 })
+    .populate('author', 'username name url').catch((err) => { return res.status(400).json({ err }); });
 
   return res.status(200).json({ user, posts });
+};
+
+export const index_page = async (req, res) => {
+  const user = res.locals.user;
+  const skipCount = req.params.page * 5;
+  const posts = await Post.find({ author: user._id }).skip(skipCount).limit(5).sort({ created_at: -1 })
+    .populate('author', 'username name url').catch((err) => { return res.status(400).json({ err }); });
+
+  return res.status(200).json({ posts });
 };
 
 export const create = [
