@@ -28,4 +28,13 @@ const downloadFile = (fileKey) => {
   return bucket.getObject(downloadParams).createReadStream();
 };
 
-export { uploadFile, downloadFile };
+const deleteFile = (fileKey) => {
+  const deleteParams = {
+    Key: fileKey,
+    Bucket: bucketName,
+  };
+
+  return s3.deleteObject(deleteParams).promise();
+};
+
+export { uploadFile, downloadFile, deleteFile };

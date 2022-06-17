@@ -13,7 +13,7 @@ const UserSchema = new Schema(
       required: true,
       unique: true,
     },
-    email_verified: {
+    emailVerified: {
       type: Boolean,
       default: false,
     },
@@ -29,16 +29,8 @@ const UserSchema = new Schema(
       type: String,
       minLength: 6,
     },
-    created_at: {
-      type: Date,
-      immutable: true,
-      default: () => Date.now(),
-    },
-    updated_at: {
-      type: Date,
-      default: () => Date.now(),
-    },
   }, {
+    timestamps: true,
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
   }

@@ -1,10 +1,10 @@
 import { body, validationResult } from 'express-validator';
-import { uploadFile, downloadFile } from '../../config/bucketConfig.js';
+import { uploadFile, downloadFile } from '../../config/s3Config.js';
 import Post from '../../models/post.js';
 
 export const index = async (req, res) => {
   const user = res.locals.user;
-  const posts = await Post.find({author: user._id}).populate('author', 'username name url')
+  const posts = await Post.find({author: user._id}).sort({ created_at: -1 }).populate('author', 'username name url')
     .catch((err) => { return res.status(400).json({ err }); });
 
   return res.status(200).json({ user, posts });
@@ -16,7 +16,6 @@ export const create = [
 
   // Process request
   async (req, res, next) => {
-    console.log(req.body)
     const errors = validationResult(req).mapped();
 
     if (Object.keys(errors).length > 0) {
@@ -24,21 +23,23 @@ export const create = [
     } else {
       // upload image to AWS
       const file = req.file;
-      let fileUrl;
+      let fileKey;
       if (file) {
         const result = await uploadFile(req.file);
-        fileUrl = result.Location;
+        fileKey = result.Key;
       }
       
       const post = new Post({ 
         text: req.body.text,
-        img_url: fileUrl,
+        image: fileKey,
         author: res.locals.user._id,
       });
 
       post.save((err) => {
         if (err) { return next(err); }
-        res.status(200).json({ post });
+        Post.findOne(post).populate('author', 'username name url').exec((error, populated_post) => {
+          res.status(200).json({ post: populated_post });
+        });
       });
     }
   }

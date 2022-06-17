@@ -7,7 +7,7 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
-    img_url: {
+    image: {
       type: String,
       default: null,
     },
@@ -16,16 +16,8 @@ const PostSchema = new Schema(
       ref: 'User',
       required: true,
     },
-    created_at: {
-      type: Date,
-      immutable: true,
-      default: () => Date.now(),
-    },
-    updated_at: {
-      type: Date,
-      default: () => Date.now(),
-    },
   }, {
+    timestamps: true,
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
   }
