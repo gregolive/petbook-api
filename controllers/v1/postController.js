@@ -21,7 +21,7 @@ export const index_page = async (req, res) => {
 
 export const create = [
   // Validate and sanitize
-  body('text', 'Post content required').trim().isLength({ min: 1 }).escape(),
+  body('text', 'Post is empty').trim().isLength({ min: 1 }).escape(),
 
   // Process request
   async (req, res, next) => {

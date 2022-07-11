@@ -7,7 +7,7 @@ import passport from 'passport';
 
 import initializeMongo from './config/mongoConfig.js';
 import initializePassport from './config/passportConfig.js';
-import { authRouterV1, userRouterV1, postRouterV1 } from './routes/v1.js';
+import { authRouterV1, userRouterV1, postRouterV1, commentRouterV1 } from './routes/v1.js';
 
 const app = express();
 
@@ -28,5 +28,6 @@ app.use(passport.initialize());
 app.use('/api/v1/auth', authRouterV1);
 app.use('/api/v1/user', userRouterV1);
 app.use('/api/v1/post', postRouterV1);
+app.use('/api/v1/post/:postId/comment', commentRouterV1);
 
 export default app;
